@@ -86,6 +86,7 @@ class Controls:
     self.is_metric = params.get("IsMetric", encoding='utf8') == "1"
     self.is_ldw_enabled = params.get("IsLdwEnabled", encoding='utf8') == "1"
     internet_needed = params.get("Offroad_ConnectivityNeeded", encoding='utf8') is not None
+    internet_needed = False
     community_feature_toggle = params.get("CommunityFeaturesToggle", encoding='utf8') == "1"
     openpilot_enabled_toggle = params.get("OpenpilotEnabledToggle", encoding='utf8') == "1"
     passive = params.get("Passive", encoding='utf8') == "1" or \
@@ -168,7 +169,7 @@ class Controls:
 
     events = self.static_events.copy()
     events.extend(CS.events)
-    events.extend(self.sm['dMonitoringState'].events)
+    # events.extend(self.sm['dMonitoringState'].events)
 
     # Create events for battery, temperature, disk space, and memory
     if self.sm['thermal'].batteryPercent < 1 and self.sm['thermal'].chargingError:
@@ -209,14 +210,14 @@ class Controls:
       events.append(create_event('radarCommIssue', [ET.NO_ENTRY, ET.SOFT_DISABLE]))
     elif not self.sm.all_alive_and_valid():
       events.append(create_event('commIssue', [ET.NO_ENTRY, ET.SOFT_DISABLE]))
-    if not self.sm['pathPlan'].mpcSolutionValid:
-      events.append(create_event('plannerError', [ET.NO_ENTRY, ET.IMMEDIATE_DISABLE]))
-    if not self.sm['pathPlan'].sensorValid and os.getenv("NOSENSOR") is None:
-      events.append(create_event('sensorDataInvalid', [ET.NO_ENTRY, ET.PERMANENT]))
+    # if not self.sm['pathPlan'].mpcSolutionValid:
+    #   events.append(create_event('plannerError', [ET.NO_ENTRY, ET.IMMEDIATE_DISABLE]))
+    # if not self.sm['pathPlan'].sensorValid and os.getenv("NOSENSOR") is None:
+    #   events.append(create_event('sensorDataInvalid', [ET.NO_ENTRY, ET.PERMANENT]))
     if not self.sm['pathPlan'].paramsValid:
       events.append(create_event('vehicleModelInvalid', [ET.WARNING]))
-    if not self.sm['pathPlan'].posenetValid:
-      events.append(create_event('posenetInvalid', [ET.NO_ENTRY, ET.WARNING]))
+    # if not self.sm['pathPlan'].posenetValid:
+    #   events.append(create_event('posenetInvalid', [ET.NO_ENTRY, ET.WARNING]))
     if not self.sm['plan'].radarValid:
       events.append(create_event('radarFault', [ET.NO_ENTRY, ET.SOFT_DISABLE]))
     if self.sm['plan'].radarCanError:
