@@ -971,7 +971,7 @@ void *pigeon_thread(void *crap) {
         if (len <= 0) break;
       #endif
 
-      //printf("got %d\n", len);
+      printf("got %d\n", len);
       alen += len;
     }
     if (alen > 0) {
@@ -1036,24 +1036,24 @@ int main() {
 
   // connect to the board
   pthread_mutex_lock(&usb_lock);
-  usb_retry_connect();
+  //usb_retry_connect();
   pthread_mutex_unlock(&usb_lock);
 
   // create threads
-  pthread_t can_send_thread_handle;
-  err = pthread_create(&can_send_thread_handle, NULL,
-                       can_send_thread, NULL);
-  assert(err == 0);
+  // pthread_t can_send_thread_handle;
+  // err = pthread_create(&can_send_thread_handle, NULL,
+  //                      can_send_thread, NULL);
+  // assert(err == 0);
 
-  pthread_t can_recv_thread_handle;
-  err = pthread_create(&can_recv_thread_handle, NULL,
-                       can_recv_thread, NULL);
-  assert(err == 0);
+  // pthread_t can_recv_thread_handle;
+  // err = pthread_create(&can_recv_thread_handle, NULL,
+  //                      can_recv_thread, NULL);
+  // assert(err == 0);
 
-  pthread_t hardware_control_thread_handle;
-  err = pthread_create(&hardware_control_thread_handle, NULL,
-                       hardware_control_thread, NULL);
-  assert(err == 0);
+  // pthread_t hardware_control_thread_handle;
+  // err = pthread_create(&hardware_control_thread_handle, NULL,
+  //                      hardware_control_thread, NULL);
+  // assert(err == 0);
 
   #ifdef QCOM2
     pigeon_needs_init = true;
@@ -1066,14 +1066,14 @@ int main() {
 
   // join threads
 
-  err = pthread_join(can_recv_thread_handle, NULL);
-  assert(err == 0);
+  // err = pthread_join(can_recv_thread_handle, NULL);
+  // assert(err == 0);
 
-  err = pthread_join(can_send_thread_handle, NULL);
-  assert(err == 0);
+  // err = pthread_join(can_send_thread_handle, NULL);
+  // assert(err == 0);
 
-  err = pthread_join(can_health_thread_handle, NULL);
-  assert(err == 0);
+  // err = pthread_join(can_health_thread_handle, NULL);
+  // assert(err == 0);
 
   #ifdef QCOM2
     err = pthread_join(pigeon_thread_handle, NULL);
@@ -1084,8 +1084,8 @@ int main() {
 
   // destruct libusb
 
-  libusb_close(dev_handle);
-  libusb_exit(ctx);
+  // libusb_close(dev_handle);
+  // libusb_exit(ctx);
 
   #ifdef QCOM2
     close(pigeon_tty_fd);
